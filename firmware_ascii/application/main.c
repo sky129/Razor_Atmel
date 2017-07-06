@@ -40,11 +40,21 @@ contraints but must complete execution regardless of success or failure of start
 the 1ms period.
 ***********************************************************************************************************************/
 
+
 void main(void)
+{static u16 u16NumBit;
+  void set_bits(void);
 {
-  G_u32SystemFlags |= _SYSTEM_INITIALIZING;
-  u32UselessVariableForExample=0;
-  /* Low level initialization */
+ u16NumBit=0xA5;
+ u16NumBit|=BIT3;}  
+G_u32SystemFlags |= _SYSTEM_INITIALIZING;
+  u32UselessVariableForExample=10;
+void clear_bits(void);
+{
+ u16NumBit=0xA5;
+ u16NumBit&=~BIT3;}
+
+/* Low level initialization */
   WatchDogSetup(); /* During development, does not reset processor if timeout */
   GpioSetup();
   ClockSetup();
@@ -83,9 +93,9 @@ void main(void)
     
   /* Super loop */  
   while(1)
-  {
+
     WATCHDOG_BONE();
-   u32UselessVariableForExample++;
+
     /* Drivers */
     LedUpdate();
     ButtonRunActiveState();
@@ -113,7 +123,7 @@ void main(void)
     
   } /* end while(1) main super loop */
   
-} /* end main() */
+ /* end main() */
 
 
 /*--------------------------------------------------------------------------------------------------------------------*/

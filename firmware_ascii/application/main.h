@@ -15,11 +15,11 @@ Header file for main.c.
 #define FIRMWARE_MAIN_REV               '0'
 #define FIRMWARE_SUB_REV1               '0'
 #define FIRMWARE_SUB_REV2               '1'
-
-
+#define _BIT3 0x08;
 /***********************************************************************************************************************
 * Constant Definitions
 ***********************************************************************************************************************/
+
 /* G_u32ApplicationFlags definitions are in configuration.h */
 
 /* G_u32SystemFlags */
@@ -42,6 +42,5 @@ Header file for main.c.
 Function Declarations
 **********************************************************************************************************************/
 void Timer1CallBack(void);
-
 
 #endif /* __MAIN_H */
