@@ -136,7 +136,25 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
+  static u8 au8Name[1]={0};
+  static u8 u8Timer=0;
+  DebugScanf(au8Name);
+	
+  switch(au8Name[0])
+  {
+  	case '1':
+		DebugPrintf(" QIAOFENG\n");
+		DebugLineFeed();
+		u8Timer++;
+		DebugPrintNumber(u8Timer);
+		DebugPrintf("\n");
+		au8Name[0]=0;
+		break;
 
+  	default:
+	  	break;
+	
+  }
 } /* end UserApp1SM_Idle() */
     
 
