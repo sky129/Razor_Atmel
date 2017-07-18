@@ -87,7 +87,7 @@ Promises:
 */
 void UserApp1Initialize(void)
 {
- 
+	PWMAudioOn(BUZZER1);
   /* If good initialization, set state to Idle */
   if( 1 )
   {
@@ -136,6 +136,60 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
+	
+	static u8 au8Array[]={0};
+  	DebugScanf(au8Array);
+	
+	switch(au8Array[0])
+	{
+		case '1':
+			PWMAudioSetFrequency(BUZZER1,262);
+			break;	
+		case '2':
+			PWMAudioSetFrequency(BUZZER1,277);
+			break;
+		case '3':
+			PWMAudioSetFrequency(BUZZER1,294);
+			break;
+		case '4':
+			PWMAudioSetFrequency(BUZZER1,330);
+			break;
+		case '5':
+		  	PWMAudioSetFrequency(BUZZER1,349);
+		  	break;
+		case '6':
+		  	PWMAudioSetFrequency(BUZZER1,415);
+		  	break;
+	    case '7':
+		  	PWMAudioSetFrequency(BUZZER1,440);
+		  	break;	
+		case '8':
+		  	PWMAudioSetFrequency(BUZZER1,466);
+		  	break;	
+		case '9':
+		  	PWMAudioSetFrequency(BUZZER1,494);
+		  	break;
+		case 'A':
+		  	PWMAudioSetFrequency(BUZZER1,523);
+		  	break;
+		case 'B':
+		  	PWMAudioSetFrequency(BUZZER1,554);
+		  	break;
+		case 'C':
+		  	PWMAudioSetFrequency(BUZZER1,587);
+		  	break;
+		case 'D':
+			PWMAudioOff(BUZZER1);
+			break;
+		case 'E':
+			PWMAudioOn(BUZZER1);
+			break;
+		default:
+		  	break;
+	}
+	
+	
+  
   
   
 } /* end UserApp1SM_Idle() */
