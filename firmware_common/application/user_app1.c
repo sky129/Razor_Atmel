@@ -188,10 +188,29 @@ static void UserApp1SM_Idle(void)
 		  	break;
 	}
 	
+	if(WasButtonPressed(BUTTON0))
+	{
+	  ButtonAcknowledge(BUTTON0);
+	  PWMAudioSetFrequency(BUZZER1,440);
+	}
+  
+  	if(WasButtonPressed(BUTTON1))
+	{
+	  ButtonAcknowledge(BUTTON1);
+	  PWMAudioSetFrequency(BUZZER1,880);
+	}
 	
-  
-  
-  
+	if(WasButtonPressed(BUTTON2))
+	{
+	  ButtonAcknowledge(BUTTON2);
+	  PWMAudioSetFrequency(BUZZER1,1760);
+	}
+	
+	if(WasButtonPressed(BUTTON3))
+	{
+	  ButtonAcknowledge(BUTTON3);
+	  PWMAudioSetFrequency(BUZZER1,3520);
+	}
 } /* end UserApp1SM_Idle() */
     
 
