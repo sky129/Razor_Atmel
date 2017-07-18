@@ -106,7 +106,7 @@
         <expressions>
           
           
-        <item>G_u32SystemTime1ms</item><item>bLightOn1</item><item>u32COUNT</item><item>u32Counter1</item><item>u32COUNTER_LIMIT_MS</item><item>bLightOn2</item><item>u32Counter2</item><item></item></expressions>
+        <item>G_u32SystemTime1ms</item><item>bLightOn1</item><item>u32COUNT</item><item>u32Counter1</item><item>u32COUNTER_LIMIT_MS</item><item>bLightOn2</item><item>u32Counter2</item><item/></expressions>
         <col-names>
           
           

@@ -142,7 +142,7 @@ static void UserApp1SM_Idle(void)
   static u32 u32Counter1 = 0;
   static u32 u32Counter2 = 0;
   static u32 u32COUNT=0;
-  static u32 u32COUNTER_LIMIT_MS=1;
+  static u32 u32COUNTER_LIMIT_MS=977;
   static bool bLightOn1 = FALSE;
   static bool bLightOn2 = FALSE;
   u32Counter1++;
@@ -151,7 +151,7 @@ static void UserApp1SM_Idle(void)
   {
     if(u32Counter2%2000==0)
      {
-      u32COUNTER_LIMIT_MS<<=1;
+      u32COUNTER_LIMIT_MS>>=1;
       u32COUNT++;
      }   
     if(u32Counter1>=u32COUNTER_LIMIT_MS)
@@ -187,7 +187,7 @@ static void UserApp1SM_Idle(void)
          }   
             if(u32Counter2%2000==0)
             {
-             u32COUNTER_LIMIT_MS>>=1;
+             u32COUNTER_LIMIT_MS<<=1;
             }
             
             if(u32COUNTER_LIMIT_MS==0)
