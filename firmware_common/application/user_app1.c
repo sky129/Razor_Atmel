@@ -85,10 +85,13 @@ Requires:
 Promises:
   - 
 */
+
+
 void UserApp1Initialize(void)
 {
- 
-  /* If good initialization, set state to Idle */
+  
+	  
+	/* If good initialization, set state to Idle */
   if( 1 )
   {
     UserApp1_StateMachine = UserApp1SM_Idle;
@@ -136,6 +139,64 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
+  static u32 u32Counter1 = 0;
+  static u32 u32Counter2 = 0;
+  static u32 u32COUNT=0;
+  static u32 u32COUNTER_LIMIT_MS=1;
+  static bool bLightOn1 = FALSE;
+  static bool bLightOn2 = FALSE;
+  u32Counter1++;
+  u32Counter2++;
+  if(u32COUNT<=10)
+  {
+    if(u32Counter2%2000==0)
+     {
+      u32COUNTER_LIMIT_MS<<=1;
+      u32COUNT++;
+     }   
+    if(u32Counter1>=u32COUNTER_LIMIT_MS)
+    {
+      u32Counter1=0;
+      if(bLightOn1)
+        {
+          HEARTBEAT_OFF();
+        }
+      else
+        {
+          HEARTBEAT_ON();
+        }
+      bLightOn1=!bLightOn1;
+    }
+  } 
+     if(u32COUNT>10)
+      {
+       if(u32Counter1>=u32COUNTER_LIMIT_MS)
+         {
+           u32Counter1=0;
+          
+           if(bLightOn2)
+            {
+              HEARTBEAT_OFF();
+            }
+            else
+            {
+              HEARTBEAT_ON();
+            }
+		   
+            bLightOn2=!bLightOn2;
+         }   
+            if(u32Counter2%2000==0)
+            {
+             u32COUNTER_LIMIT_MS>>=1;
+            }
+            
+            if(u32COUNTER_LIMIT_MS==0)
+            {
+              u32COUNT=0;
+			  u32COUNTER_LIMIT_MS=1;
+            }
+         
+      }
 
 } /* end UserApp1SM_Idle() */
     
