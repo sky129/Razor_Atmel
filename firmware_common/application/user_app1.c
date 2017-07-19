@@ -136,7 +136,21 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
-
+	static LedNumType eLed;
+	static LedNumType eCount;
+	static bool bOn;
+  	static u32 u32TimeCount=0;
+  	u32TimeCount++;
+	if(u32TimeCount==10)
+	{
+		u32TimeCount=0;
+		if(u32TimeCount==1000)
+		{
+		  LedDisplayStartList();
+		  LedDisplayCommand();
+		  LedDIsplayPrinListLine();
+		}
+	}
 } /* end UserApp1SM_Idle() */
     
 
