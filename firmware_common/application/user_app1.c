@@ -87,7 +87,7 @@ Promises:
 */
 void UserApp1Initialize(void)
 {
- LCDClearChars(LINE1_START_ADDR,19);
+ LCDCommand(LCD_CLEAR_CMD);
  LCDMessage(LINE1_START_ADDR+1,"0");
  LCDMessage(LINE1_START_ADDR+3,"0");
  LCDMessage(LINE1_START_ADDR+6,"0");
