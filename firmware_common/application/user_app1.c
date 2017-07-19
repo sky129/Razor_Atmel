@@ -136,21 +136,45 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
-	static LedNumType eLed;
-	static LedNumType eCount;
-	static bool bOn;
-  	static u32 u32TimeCount=0;
+  static u32 u32TimeCount;
+  /*
+  typedef struct
+	{
+	  LedNumType eLed,
+	  u32 u32Time,
+	  bool bOn,
+	  LedRateType eCountRate
+	}LedCommandType
+	static LedCommandType aeDemolist[]=
+	{
+	  {RED,1000,TRUE,LED_PWM_100},
+	  {RED,6000,FALSE,LED_PWM_0}
+	}
+	*/
   	u32TimeCount++;
-	if(u32TimeCount==10)
+	if(u32TimeCount==1000)
+	{
+	  LedOn(RED);
+	}
+	if(u32TimeCount==6000)
+	{
+	  LedOff(RED);
+	}
+	if(u32TimeCount==3000)
+	{
+	  LedOn(GREEN);
+	}
+	if(u32TimeCount==9000)
+	{
+	  LedOff(GREEN);
+	}
+	if(u32TimeCount==10000)
 	{
 		u32TimeCount=0;
-		if(u32TimeCount==1000)
-		{
-		  LedDisplayStartList();
-		  LedDisplayCommand();
-		  LedDIsplayPrinListLine();
-		}
+		
 	}
+	
+	
 } /* end UserApp1SM_Idle() */
     
 
