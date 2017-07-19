@@ -87,7 +87,20 @@ Promises:
 */
 void UserApp1Initialize(void)
 {
- 
+ LCDClearChars(LINE1_START_ADDR,19);
+ LCDMessage(LINE1_START_ADDR+1,"0");
+ LCDMessage(LINE1_START_ADDR+3,"0");
+ LCDMessage(LINE1_START_ADDR+6,"0");
+ LCDMessage(LINE1_START_ADDR+8,"0");
+ LCDMessage(LINE1_START_ADDR+11,"0");
+ LCDMessage(LINE1_START_ADDR+13,"0");
+ LCDMessage(LINE1_START_ADDR+16,"0");
+ LCDMessage(LINE1_START_ADDR+18,"0");
+ LCDMessage(LINE2_START_ADDR+18,"0");
+ LCDMessage(LINE2_START_ADDR+17,"0");
+ LCDMessage(LINE2_START_ADDR+16,"0");
+ LCDMessage(LINE2_START_ADDR+15,"0");
+ LCDMessage(LINE2_START_ADDR+14,"0");
   /* If good initialization, set state to Idle */
   if( 1 )
   {
@@ -136,45 +149,74 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
-  static u32 u32TimeCount;
-  /*
-  typedef struct
-	{
-	  LedNumType eLed,
-	  u32 u32Time,
-	  bool bOn,
-	  LedRateType eCountRate
-	}LedCommandType
-	static LedCommandType aeDemolist[]=
+  static u32 u32TimePoint=0;
+  static u8 i=0;
+  static u8 au8Wan[]={0};
+  static u8 au8Qian[]={0};
+  static u8 au8Bai[]={0};
+  static u8 au8Shi[]={0};
+  static u8 au8Ge[]={0};
+  static u8 au8Bit[16]= {18,18,16,16,13,13,11,11,8,8,6,6,3,3,1,1};
+  
+  au8Wan[0]=u32TimePoint/10000;
+  au8Qian[0]=u32TimePoint%10000/1000;
+  au8Bai[0]=u32TimePoint%1000/100;
+  au8Shi[0]=u32TimePoint%100/10;
+  au8Ge[0]=u32TimePoint%10;
+
+  LedCommandType aeDemolist[]=
 	{
 	  {RED,1000,TRUE,LED_PWM_100},
-	  {RED,6000,FALSE,LED_PWM_0}
-	}
-	*/
-  	u32TimeCount++;
-	if(u32TimeCount==1000)
+	  {RED,10000,FALSE,LED_PWM_0},
+	  {ORANGE,2000,TRUE,LED_PWM_100},
+	  {ORANGE,11000,FALSE,LED_PWM_0},
+	  {YELLOW,3000,TRUE,LED_PWM_100},
+	  {YELLOW,12000,FALSE,LED_PWM_0},
+	  {GREEN,4000,TRUE,LED_PWM_100},
+	  {GREEN,13000,FALSE,LED_PWM_0},
+	  {CYAN,5000,TRUE,LED_PWM_100},
+	  {CYAN,14000,FALSE,LED_PWM_0},
+	  {BLUE,6000,TRUE,LED_PWM_100},
+	  {BLUE,15000,FALSE,LED_PWM_0},
+	  {PURPLE,7000,TRUE,LED_PWM_100},
+	  {PURPLE,16000,FALSE,LED_PWM_0},
+	  {WHITE,8000,TRUE,LED_PWM_100},
+	  {WHITE,17000,FALSE,LED_PWM_0},
+	};
+   
+	u32TimePoint++;
+	if(u32TimePoint == 20000)
 	{
-	  LedOn(RED);
+	  u32TimePoint=0;
 	}
-	if(u32TimeCount==6000)
+	
+	if(u32TimePoint%1000==0)
 	{
-	  LedOff(RED);
-	}
-	if(u32TimeCount==3000)
-	{
-	  LedOn(GREEN);
-	}
-	if(u32TimeCount==9000)
-	{
-	  LedOff(GREEN);
-	}
-	if(u32TimeCount==10000)
-	{
-		u32TimeCount=0;
+		LCDMessage(LINE2_START_ADDR+14,au8Wan);
+		LCDMessage(LINE2_START_ADDR+15,au8Qian);
+		LCDMessage(LINE2_START_ADDR+16,au8Bai);
+		LCDMessage(LINE2_START_ADDR+17,au8Shi);
+		LCDMessage(LINE2_START_ADDR+18,au8Ge);
 		
+		for(i=0;i<16;i++)
+		{
+			if(u32TimePoint==aeDemolist[i].u32Time)
+			{
+			  LedPWM(aeDemolist[i].eLed,aeDemolist[i].eCurrentRate);
+			  
+			  if(aeDemolist[i].bOn==TRUE)
+			  {
+				LCDMessage(LINE1_START_ADDR+au8Bit[i],"1");
+			  }
+			  else
+			  {
+				LCDMessage(LINE1_START_ADDR+au8Bit[i],"0");
+			  }
+			}
+			
+			
+		}
 	}
-	
-	
 } /* end UserApp1SM_Idle() */
     
 
