@@ -182,8 +182,8 @@ static void UserApp1SM_Idle(void)
 	  {WHITE,17000,FALSE,LED_PWM_0},
 	};
     
-  	u32TimePoint++;
-	u32Time++;
+  	++u32TimePoint;
+	++u32Time;
 
 	
 	if(u32TimePoint == 20000)
@@ -193,7 +193,7 @@ static void UserApp1SM_Idle(void)
 	
 	if(u32TimePoint%1000==0)
 	{
-		LCDMessage(LINE2_START_ADDR+18,au8Time);
+		LCDMessage(LINE2_START_ADDR+14,au8Time);
 		for(i=0;i<16;i++)
 		{
 			if(u32TimePoint==aeDemolist[i].u32Time)
