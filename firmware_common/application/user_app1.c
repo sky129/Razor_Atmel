@@ -97,10 +97,7 @@ void UserApp1Initialize(void)
  LCDMessage(LINE1_START_ADDR+16,"0");
  LCDMessage(LINE1_START_ADDR+18,"0");
  LCDMessage(LINE2_START_ADDR+18,"0");
- LCDMessage(LINE2_START_ADDR+17,"0");
- LCDMessage(LINE2_START_ADDR+16,"0");
- LCDMessage(LINE2_START_ADDR+15,"0");
- LCDMessage(LINE2_START_ADDR+14,"0");
+
   /* If good initialization, set state to Idle */
   if( 1 )
   {
@@ -149,20 +146,17 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
+  static u32 u32Time=0;
   static u32 u32TimePoint=0;
   static u8 i=0;
-  static u8 au8Wan[]={0};
-  static u8 au8Qian[]={0};
-  static u8 au8Bai[]={0};
-  static u8 au8Shi[]={0};
-  static u8 au8Ge[]={0};
+  static u8 au8Time[]={0,0,0,0,0};
   static u8 au8Bit[16]= {18,18,16,16,13,13,11,11,8,8,6,6,3,3,1,1};
   
-  au8Wan[0]=u32TimePoint/10000;
-  au8Qian[0]=u32TimePoint%10000/1000;
-  au8Bai[0]=u32TimePoint%1000/100;
-  au8Shi[0]=u32TimePoint%100/10;
-  au8Ge[0]=u32TimePoint%10;
+  au8Time[0]=u32Time/10000+48;
+  au8Time[1]=u32Time%10000/1000+48;
+  au8Time[2]=u32Time%1000/100+48;
+  au8Time[3]=u32Time%100/10+48;
+  au8Time[4]=u32Time%10+48;
 
   LedCommandType aeDemolist[]=
 	{
@@ -183,8 +177,11 @@ static void UserApp1SM_Idle(void)
 	  {WHITE,8000,TRUE,LED_PWM_100},
 	  {WHITE,17000,FALSE,LED_PWM_0},
 	};
-   
-	u32TimePoint++;
+    
+  	u32TimePoint++;
+	u32Time++;
+
+	
 	if(u32TimePoint == 20000)
 	{
 	  u32TimePoint=0;
@@ -192,12 +189,7 @@ static void UserApp1SM_Idle(void)
 	
 	if(u32TimePoint%1000==0)
 	{
-		LCDMessage(LINE2_START_ADDR+14,au8Wan);
-		LCDMessage(LINE2_START_ADDR+15,au8Qian);
-		LCDMessage(LINE2_START_ADDR+16,au8Bai);
-		LCDMessage(LINE2_START_ADDR+17,au8Shi);
-		LCDMessage(LINE2_START_ADDR+18,au8Ge);
-		
+		LCDMessage(LINE2_START_ADDR+18,au8Time);
 		for(i=0;i<16;i++)
 		{
 			if(u32TimePoint==aeDemolist[i].u32Time)
