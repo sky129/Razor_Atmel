@@ -156,6 +156,8 @@ static void UserApp1SM_Idle(void)
   static u8 au8Time[5]={0,0,0,0,0};
   static u8 au8Bit[16]= {18,18,16,16,13,13,11,11,8,8,6,6,3,3,1,1};
   
+  ++u32TimePoint;
+  ++u32Time;
   au8Time[0]=u32Time/10000+48;
   au8Time[1]=u32Time%10000/1000+48;
   au8Time[2]=u32Time%1000/100+48;
@@ -181,11 +183,7 @@ static void UserApp1SM_Idle(void)
 	  {WHITE,8000,TRUE,LED_PWM_100},
 	  {WHITE,17000,FALSE,LED_PWM_0},
 	};
-    
-  	++u32TimePoint;
-	++u32Time;
 
-	
 	if(u32TimePoint == 20000)
 	{
 	  u32TimePoint=0;
