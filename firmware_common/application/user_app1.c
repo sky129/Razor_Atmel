@@ -97,6 +97,10 @@ void UserApp1Initialize(void)
  LCDMessage(LINE1_START_ADDR+16,"0");
  LCDMessage(LINE1_START_ADDR+18,"0");
  LCDMessage(LINE2_START_ADDR+18,"0");
+ LCDMessage(LINE2_START_ADDR+17,"0");
+ LCDMessage(LINE2_START_ADDR+16,"0");
+ LCDMessage(LINE2_START_ADDR+15,"0");
+ LCDMessage(LINE2_START_ADDR+14,"0");
 
   /* If good initialization, set state to Idle */
   if( 1 )
@@ -149,7 +153,7 @@ static void UserApp1SM_Idle(void)
   static u32 u32Time=0;
   static u32 u32TimePoint=0;
   static u8 i=0;
-  static u8 au8Time[]={0,0,0,0,0};
+  static u8 au8Time[5]={0,0,0,0,0};
   static u8 au8Bit[16]= {18,18,16,16,13,13,11,11,8,8,6,6,3,3,1,1};
   
   au8Time[0]=u32Time/10000+48;
