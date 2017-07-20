@@ -150,7 +150,7 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
-  static u32 u32Time=0;
+  static u32 u32Time=1000;
   static u32 u32TimePoint=0;
   static u8 i=0;
   static u8 au8Time[5]={0,0,0,0,0};
