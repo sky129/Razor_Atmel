@@ -160,6 +160,15 @@ void UserAppRunActiveState(void)
 /**********************************************************************************************************************
 State Machine Function Definitions
 **********************************************************************************************************************/
+static void UserAppSM_State1(void)
+{
+  
+}
+
+static void UserAppSM_State2(void)
+{
+  
+}
 
 /*-------------------------------------------------------------------------------------------------------------------*/
 /* Wait for a message to be queued */
@@ -173,22 +182,12 @@ static void UserAppSM_Idle(void)
   /* BUTTON0 functionality */
   if( IsButtonPressed(BUTTON0) )
   {
-    /* The button is currently pressed, so make sure the LED is on */
-    LedOn(WHITE);
-  }
-  else
-  {
-    /* The button is not pressed, so make sure the LED is off */
-    LedOff(WHITE);
+   
   }
   
   if( IsButtonHeld(BUTTON0, BUTTON0_HOLD_TIME) )
   {
-    LedOn(GREEN);
-  }
-  else
-  {
-    LedOff(GREEN);
+    
   }
 
   /* BUTTON1 functionality */
@@ -219,6 +218,8 @@ static void UserAppSM_Idle(void)
     ButtonAcknowledge(BUTTON2);
 	LedOff(BLUE);
 	LedOff(PURPLE);
+	LedOff(WHITE);
+	LedOff(CYAN);
 	LedOn(GREEN);
 	LedOn(YELLOW);
 	LedOn(ORANGE);
@@ -236,11 +237,7 @@ static void UserAppSM_Idle(void)
   /* BUTTON3 functionality */
   if( IsButtonHeld(BUTTON3, 2000) )
   {
-    LedOn(CYAN);
-  }
-  else
-  {
-    LedOff(CYAN);
+    
   }
 #endif /* MPG1 */
 
