@@ -192,62 +192,45 @@ static void UserAppSM_Idle(void)
   }
 
   /* BUTTON1 functionality */
-  if( IsButtonPressed(BUTTON1) )
-  {
-    LedOn(PURPLE);
-  }
-  else
-  {
-    LedOff(PURPLE);
-  }
 
   if( WasButtonPressed(BUTTON1) )
   {
     /* Be sure to acknowledge the button press */
     ButtonAcknowledge(BUTTON1);
-
-    /* If the LED is already blinking, toggle it off */
-    if(bLedBlink)
-    {
-      bLedBlink = FALSE;
-      LedOff(YELLOW);
-    }
-    /* else start blinking the LED at the current rate */
-    else
-    {
-      bLedBlink = TRUE;
-      LedBlink(YELLOW, aeBlinkRate[u8BlinkRateIndex]);
-    }
+	LedOn(PURPLE);
+	LedOn(WHITE);
+	LedOn(BLUE);
+	LedOn(CYAN);
+	LedOff(ORANGE);
+	LedOff(RED);
+	LedOff(GREEN);
+	LedOff(YELLOW);
+	DebugPrintf("Entering state 1");
+	LCDMessage(LINE1_START_ADDR,"STATE 1");
+	PWMAudioOff(BUZZER1);
   }
  
   /* BUTTON2 functionality */
-  if( IsButtonPressed(BUTTON2) )
-  {
-    LedOn(BLUE);
-  }
-  else
-  {
-    LedOff(BLUE);
-  }
 
   /* Check to see if we need to update the blink rate */
   if( WasButtonPressed(BUTTON2) )
   {
     /* Be sure to acknowledge the button press */
     ButtonAcknowledge(BUTTON2);
-
-    /* Update the blink rate and handle overflow only if the LED is currently blinking */
-    if(bLedBlink)
-    {
-      u8BlinkRateIndex++;
-      if(u8BlinkRateIndex == 4)
-      {
-        u8BlinkRateIndex = 0;
-      }
-      
-      /* Request the rate udpate */
-      LedBlink(YELLOW, aeBlinkRate[u8BlinkRateIndex]);
-    }
+	LedOff(BLUE);
+	LedOff(PURPLE);
+	LedOn(GREEN);
+	LedOn(YELLOW);
+	LedOn(ORANGE);
+	LedOn(RED);
+	LedBlink(GREEN,LED_1HZ);
+	LedBlink(YELLOW,LED_2HZ);
+	LedBlink(ORANGE,LED_4HZ);
+	LedBlink(RED,LED_8HZ);
+	DebugPrintf("Entering state 2");
+	LCDMessage(LINE1_START_ADDR,"STATE 2");
+	PWMAudioOn(BUZZER1);
+    PWMAudioSetFrequency(BUZZER1,200);
   }
 
   /* BUTTON3 functionality */
