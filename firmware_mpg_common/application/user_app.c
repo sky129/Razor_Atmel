@@ -162,12 +162,43 @@ State Machine Function Definitions
 **********************************************************************************************************************/
 static void UserAppSM_State1(void)
 {
-  
+    LedOn(PURPLE);
+    LedOn(WHITE);
+    LedOn(BLUE);
+    LedOn(CYAN);
+    LedOff(ORANGE);
+    LedOff(RED);
+    LedOff(GREEN);
+    LedOff(YELLOW);
+    DebugPrintf("Entering state 1");
+    LCDMessage(LINE1_START_ADDR,"STATE 1");
+    PWMAudioOff(BUZZER1);
+    LedOn(LCD_RED); 
+    LedOn(LCD_GREEN);
+    LedOff(LCD_BLUE);
 }
 
 static void UserAppSM_State2(void)
 {
-  
+    LedOff(BLUE);
+    LedOff(PURPLE);
+    LedOff(WHITE);
+    LedOff(CYAN);
+    LedOn(GREEN);
+    LedOn(YELLOW);
+    LedOn(ORANGE);
+    LedOn(RED);
+    LedBlink(GREEN,LED_1HZ);
+    LedBlink(YELLOW,LED_2HZ);
+    LedBlink(ORANGE,LED_4HZ);
+    LedBlink(RED,LED_8HZ);
+    DebugPrintf("Entering state 2");
+    LCDMessage(LINE1_START_ADDR,"STATE 2");
+    PWMAudioOn(BUZZER1);
+    PWMAudioSetFrequency(BUZZER1,200);
+    LedOn(LCD_RED); 
+    LedOff(LCD_GREEN);
+    LedOn(LCD_BLUE);
 }
 
 /*-------------------------------------------------------------------------------------------------------------------*/
@@ -177,6 +208,7 @@ static void UserAppSM_Idle(void)
   static LedRateType aeBlinkRate[] = {LED_1HZ, LED_2HZ, LED_4HZ, LED_8HZ};
   static u8 u8BlinkRateIndex = 0;
   static bool bLedBlink = FALSE;
+
   
 #ifdef MPG1
   /* BUTTON0 functionality */
@@ -196,17 +228,7 @@ static void UserAppSM_Idle(void)
   {
     /* Be sure to acknowledge the button press */
     ButtonAcknowledge(BUTTON1);
-	LedOn(PURPLE);
-	LedOn(WHITE);
-	LedOn(BLUE);
-	LedOn(CYAN);
-	LedOff(ORANGE);
-	LedOff(RED);
-	LedOff(GREEN);
-	LedOff(YELLOW);
-	DebugPrintf("Entering state 1");
-	LCDMessage(LINE1_START_ADDR,"STATE 1");
-	PWMAudioOff(BUZZER1);
+    UserAppSM_State1();
   }
  
   /* BUTTON2 functionality */
@@ -216,22 +238,7 @@ static void UserAppSM_Idle(void)
   {
     /* Be sure to acknowledge the button press */
     ButtonAcknowledge(BUTTON2);
-	LedOff(BLUE);
-	LedOff(PURPLE);
-	LedOff(WHITE);
-	LedOff(CYAN);
-	LedOn(GREEN);
-	LedOn(YELLOW);
-	LedOn(ORANGE);
-	LedOn(RED);
-	LedBlink(GREEN,LED_1HZ);
-	LedBlink(YELLOW,LED_2HZ);
-	LedBlink(ORANGE,LED_4HZ);
-	LedBlink(RED,LED_8HZ);
-	DebugPrintf("Entering state 2");
-	LCDMessage(LINE1_START_ADDR,"STATE 2");
-	PWMAudioOn(BUZZER1);
-    PWMAudioSetFrequency(BUZZER1,200);
+    UserAppSM_State2();
   }
 
   /* BUTTON3 functionality */
