@@ -229,6 +229,7 @@ static void UserAppSM_Idle(void)
     /* Be sure to acknowledge the button press */
     ButtonAcknowledge(BUTTON1);
     UserAppSM_State1();
+    DebugLineFeed();
   }
  
   /* BUTTON2 functionality */
@@ -239,6 +240,7 @@ static void UserAppSM_Idle(void)
     /* Be sure to acknowledge the button press */
     ButtonAcknowledge(BUTTON2);
     UserAppSM_State2();
+    DebugLineFeed();
   }
 
   /* BUTTON3 functionality */
