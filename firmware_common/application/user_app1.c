@@ -87,7 +87,18 @@ Promises:
 */
 void UserApp1Initialize(void)
 {
- 
+    LedOff(PURPLE);
+    LedOff(WHITE);
+    LedOff(BLUE);
+    LedOff(CYAN);
+    LedOff(ORANGE);
+    LedOff(RED);
+    LedOff(GREEN);
+    LedOff(YELLOW);
+    PWMAudioOff(BUZZER1);
+    LedOn(LCD_RED); 
+    LedOn(LCD_GREEN);
+    LedOn(LCD_BLUE);
   /* If good initialization, set state to Idle */
   if( 1 )
   {
@@ -135,10 +146,11 @@ static void UserAppSM_State1(void)
     DebugPrintf("Entering state 1");
     DebugLineFeed();
     LCDMessage(LINE1_START_ADDR,"STATE 1");
-    PWMAudioOff(BUZZER1);
+    //PWMAudioOff(BUZZER1);
     LedOn(LCD_RED); 
     LedOff(LCD_GREEN);
     LedOn(LCD_BLUE);
+    UserApp1_StateMachine = UserApp1SM_Idle;
 }
 
 static void UserAppSM_State2(void)
@@ -158,11 +170,12 @@ static void UserAppSM_State2(void)
     DebugPrintf("Entering state 2");
     DebugLineFeed();
     LCDMessage(LINE1_START_ADDR,"STATE 2");
-    PWMAudioOn(BUZZER1);
-    PWMAudioSetFrequency(BUZZER1,200);
+    //PWMAudioOn(BUZZER1);
+    //PWMAudioSetFrequency(BUZZER1,200);
     LedOn(LCD_RED); 
     LedPWM(LCD_GREEN,LED_PWM_30);
     LedOff(LCD_BLUE);
+    UserApp1_StateMachine = UserApp1SM_Idle;
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -182,27 +195,30 @@ static void UserApp1SM_Idle(void)
   static u8 u8BlinkRateIndex = 0;
   static bool bLedBlink = FALSE;
   static u8 au8State[1]={0};
+  static u32 u32Time=0;
+  u32Time++;
   
   DebugScanf(au8State);
   switch(au8State[0])
   {
-    case '1':
-              UserAppSM_State1();
-              au8State[0]=0;
-              break;
-    case '2':
-              UserAppSM_State2();
-              au8State[0]=0;
-              break;
-    default:
-              break;
+      case '1':
+                UserAppSM_State1();
+                au8State[0]=0;
+                break;
+      case '2':
+                UserAppSM_State2();
+                au8State[0]=0;
+                break;
+      default:
+                break;
   }
+  
   
   if( WasButtonPressed(BUTTON1) )
   {
     /* Be sure to acknowledge the button press */
     ButtonAcknowledge(BUTTON1);
-    UserAppSM_State1();
+    UserApp1_StateMachine=UserAppSM_State1;
     DebugLineFeed();
   }
  
@@ -213,7 +229,7 @@ static void UserApp1SM_Idle(void)
   {
     /* Be sure to acknowledge the button press */
     ButtonAcknowledge(BUTTON2);
-    UserAppSM_State2();
+    UserApp1_StateMachine=UserAppSM_State2;
     DebugLineFeed();
   }
 } /* end UserApp1SM_Idle() */
