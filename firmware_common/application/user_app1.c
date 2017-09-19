@@ -202,11 +202,11 @@ static void UserApp1SM_Idle(void)
   switch(au8State[0])
   {
       case '1':
-                UserAppSM_State1();
+                 UserApp1_StateMachine=UserAppSM_State1;
                 au8State[0]=0;
                 break;
       case '2':
-                UserAppSM_State2();
+                 UserApp1_StateMachine=UserAppSM_State2;
                 au8State[0]=0;
                 break;
       default:
