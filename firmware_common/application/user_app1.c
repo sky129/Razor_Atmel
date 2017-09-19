@@ -122,6 +122,48 @@ void UserApp1RunActiveState(void)
 
 } /* end UserApp1RunActiveState */
 
+static void UserAppSM_State1(void)
+{
+    LedOn(PURPLE);
+    LedOn(WHITE);
+    LedOn(BLUE);
+    LedOn(CYAN);
+    LedOff(ORANGE);
+    LedOff(RED);
+    LedOff(GREEN);
+    LedOff(YELLOW);
+    DebugPrintf("Entering state 1");
+    DebugLineFeed();
+    LCDMessage(LINE1_START_ADDR,"STATE 1");
+    PWMAudioOff(BUZZER1);
+    LedOn(LCD_RED); 
+    LedOff(LCD_GREEN);
+    LedOn(LCD_BLUE);
+}
+
+static void UserAppSM_State2(void)
+{
+    LedOff(BLUE);
+    LedOff(PURPLE);
+    LedOff(WHITE);
+    LedOff(CYAN);
+    LedOn(GREEN);
+    LedOn(YELLOW);
+    LedOn(ORANGE);
+    LedOn(RED);
+    LedBlink(GREEN,LED_1HZ);
+    LedBlink(YELLOW,LED_2HZ);
+    LedBlink(ORANGE,LED_4HZ);
+    LedBlink(RED,LED_8HZ);
+    DebugPrintf("Entering state 2");
+    DebugLineFeed();
+    LCDMessage(LINE1_START_ADDR,"STATE 2");
+    PWMAudioOn(BUZZER1);
+    PWMAudioSetFrequency(BUZZER1,200);
+    LedOn(LCD_RED); 
+    LedPWM(LCD_GREEN,LED_PWM_30);
+    LedOff(LCD_BLUE);
+}
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Private functions                                                                                                  */
@@ -136,7 +178,44 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
+  static LedRateType aeBlinkRate[] = {LED_1HZ, LED_2HZ, LED_4HZ, LED_8HZ};
+  static u8 u8BlinkRateIndex = 0;
+  static bool bLedBlink = FALSE;
+  static u8 au8State[1]={0};
+  
+  DebugScanf(au8State);
+  switch(au8State[0])
+  {
+    case '1':
+              UserAppSM_State1();
+              au8State[0]=0;
+              break;
+    case '2':
+              UserAppSM_State2();
+              au8State[0]=0;
+              break;
+    default:
+              break;
+  }
+  
+  if( WasButtonPressed(BUTTON1) )
+  {
+    /* Be sure to acknowledge the button press */
+    ButtonAcknowledge(BUTTON1);
+    UserAppSM_State1();
+    DebugLineFeed();
+  }
+ 
+  /* BUTTON2 functionality */
 
+  /* Check to see if we need to update the blink rate */
+  if( WasButtonPressed(BUTTON2) )
+  {
+    /* Be sure to acknowledge the button press */
+    ButtonAcknowledge(BUTTON2);
+    UserAppSM_State2();
+    DebugLineFeed();
+  }
 } /* end UserApp1SM_Idle() */
     
 
