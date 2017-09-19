@@ -146,7 +146,7 @@ static void UserAppSM_State1(void)
     DebugPrintf("Entering state 1");
     DebugLineFeed();
     LCDMessage(LINE1_START_ADDR,"STATE 1");
-    //PWMAudioOff(BUZZER1);
+    PWMAudioOff(BUZZER1);
     LedOn(LCD_RED); 
     LedOff(LCD_GREEN);
     LedOn(LCD_BLUE);
