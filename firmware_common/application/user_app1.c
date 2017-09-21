@@ -286,18 +286,6 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
-  static u32 u32Time=0;
-         u32Time++;
-         if(u32Time==1000)
-                {
-                  u32Time=0;
-                  PWMAudioOn(BUZZER1);
-                  PWMAudioSetFrequency(BUZZER1,200);
-                }
-                if(u32Time==100)
-                {
-                  PWMAudioOff(BUZZER1);
-                }
 
 } /* end UserApp1SM_Idle() */
     
