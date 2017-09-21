@@ -59,8 +59,6 @@ Variable names shall start with "UserApp1_" and be declared as static.
 ***********************************************************************************************************************/
 static fnCode_type UserApp1_StateMachine;            /* The state machine function pointer */
 //static u32 UserApp1_u32Timeout;                      /* Timeout counter used across states */
-
-
 /**********************************************************************************************************************
 Function Definitions
 **********************************************************************************************************************/
@@ -99,10 +97,12 @@ void UserApp1Initialize(void)
     LedOn(LCD_RED); 
     LedOn(LCD_GREEN);
     LedOn(LCD_BLUE);
+    PWMAudioSetFrequency(BUZZER1,200);
   /* If good initialization, set state to Idle */
   if( 1 )
   {
-    UserApp1_StateMachine = UserApp1SM_Idle;
+    UserApp1_StateMachine = UserApp1SM_State1;
+     //UserApp1_StateMachine = UserApp1SM_Idle;
   }
   else
   {
@@ -133,8 +133,16 @@ void UserApp1RunActiveState(void)
 
 } /* end UserApp1RunActiveState */
 
-static void UserAppSM_State1(void)
+static void UserApp1SM_State1(void)
 {
+  static bool bIsChange=FALSE;
+  static bool bState1=TRUE;
+  static u8   au8Inputdata[20];
+  static u8   au8Input[2];
+  static u8   u8Datacount=0;
+  static u8   u8Count;
+  if(bState1)
+  {  
     LedOn(PURPLE);
     LedOn(WHITE);
     LedOn(BLUE);
@@ -146,15 +154,57 @@ static void UserAppSM_State1(void)
     DebugPrintf("Entering state 1");
     DebugLineFeed();
     LCDMessage(LINE1_START_ADDR,"STATE 1");
-    PWMAudioOff(BUZZER1);
     LedOn(LCD_RED); 
-    LedOff(LCD_GREEN);
     LedOn(LCD_BLUE);
-    UserApp1_StateMachine = UserApp1SM_Idle;
+    bState1=FALSE;
+  }
+    
+  u8Count=DebugScanf(au8Input);
+  if(u8Count>0)
+  {
+    au8Inputdata[u8Datacount]=au8Input[0];
+    if((au8Input[0]=='\r'))
+    {
+      if((au8Inputdata[0]=='2')&&(u8Datacount==1))
+      {
+        bIsChange=TRUE; 
+      }
+      u8Datacount=0; 
+    }
+    else
+    {
+      u8Datacount++;
+    }
+  }
+  //2<CR> ON DEBUG
+    
+    if( WasButtonPressed(BUTTON2) )
+    {
+      ButtonAcknowledge(BUTTON2);
+      bIsChange=TRUE;
+    }
+    if(bIsChange)
+    {
+      UserApp1_StateMachine=UserApp1SM_State2;
+      bState1=TRUE;
+      bIsChange=FALSE;
+    }
+  PWMAudioOff(BUZZER1);   
 }
 
-static void UserAppSM_State2(void)
+static void UserApp1SM_State2(void)
 {
+  static bool bIsChange = FALSE;
+  static bool bState2 = TRUE;
+  static u8   au8Inputdata[20];
+  static u8   au8Input[2];
+  static u8   u8Datacount=0;
+  static u8   u8Count;
+  static u32 u32Time=0;
+  u32Time++;
+  
+  if(bState2) 
+  {
     LedOff(BLUE);
     LedOff(PURPLE);
     LedOff(WHITE);
@@ -169,19 +219,64 @@ static void UserAppSM_State2(void)
     LedBlink(RED,LED_8HZ);
     DebugPrintf("Entering state 2");
     DebugLineFeed();
-    LCDMessage(LINE1_START_ADDR,"STATE 2");
-    //PWMAudioOn(BUZZER1);
-    //PWMAudioSetFrequency(BUZZER1,200);
+    LCDMessage(LINE1_START_ADDR,"STATE 2");   
     LedOn(LCD_RED); 
     LedPWM(LCD_GREEN,LED_PWM_30);
     LedOff(LCD_BLUE);
-    UserApp1_StateMachine = UserApp1SM_Idle;
+    bState2=FALSE;
+  }
+  
+  u8Count=DebugScanf(au8Input);
+  if(u8Count>0)
+  {
+    au8Inputdata[u8Datacount]=au8Input[0];
+    if((au8Input[0]=='\r'))
+    {
+      if((au8Inputdata[0]=='1')&&(u8Datacount==1))
+      {
+        bIsChange=TRUE; 
+      }
+      u8Datacount=0; 
+    }
+    else
+    {
+      u8Datacount++;
+    }
+  }//1<CR> ON DEBUG
+    
+  if( WasButtonPressed(BUTTON1) )
+  {
+    ButtonAcknowledge(BUTTON1);
+    bIsChange=TRUE;
+  }
+  if(bIsChange)
+  {
+    UserApp1_StateMachine = UserApp1SM_State1;
+    bState2=TRUE;
+    bIsChange=FALSE;
+  }
+  //BUZEER RUN AT 200HZ
+  
+  if(u32Time==1000)
+  {
+    u32Time=0;
+    PWMAudioOn(BUZZER1);
+      
+  }
+  if(u32Time==100)
+  {
+    PWMAudioOff(BUZZER1);
+  }
+  //SET BUZZER
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Private functions                                                                                                  */
 /*--------------------------------------------------------------------------------------------------------------------*/
 
+
+   
+  
 
 /**********************************************************************************************************************
 State Machine Function Definitions
@@ -191,47 +286,19 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
-  static LedRateType aeBlinkRate[] = {LED_1HZ, LED_2HZ, LED_4HZ, LED_8HZ};
-  static u8 u8BlinkRateIndex = 0;
-  static bool bLedBlink = FALSE;
-  static u8 au8State[1]={0};
   static u32 u32Time=0;
-  u32Time++;
-  
-  DebugScanf(au8State);
-  switch(au8State[0])
-  {
-      case '1':
-                 UserApp1_StateMachine=UserAppSM_State1;
-                au8State[0]=0;
-                break;
-      case '2':
-                 UserApp1_StateMachine=UserAppSM_State2;
-                au8State[0]=0;
-                break;
-      default:
-                break;
-  }
-  
-  
-  if( WasButtonPressed(BUTTON1) )
-  {
-    /* Be sure to acknowledge the button press */
-    ButtonAcknowledge(BUTTON1);
-    UserApp1_StateMachine=UserAppSM_State1;
-    DebugLineFeed();
-  }
- 
-  /* BUTTON2 functionality */
+         u32Time++;
+         if(u32Time==1000)
+                {
+                  u32Time=0;
+                  PWMAudioOn(BUZZER1);
+                  PWMAudioSetFrequency(BUZZER1,200);
+                }
+                if(u32Time==100)
+                {
+                  PWMAudioOff(BUZZER1);
+                }
 
-  /* Check to see if we need to update the blink rate */
-  if( WasButtonPressed(BUTTON2) )
-  {
-    /* Be sure to acknowledge the button press */
-    ButtonAcknowledge(BUTTON2);
-    UserApp1_StateMachine=UserAppSM_State2;
-    DebugLineFeed();
-  }
 } /* end UserApp1SM_Idle() */
     
 
