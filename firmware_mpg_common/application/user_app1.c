@@ -198,11 +198,11 @@ static void UserApp1SM_AntChannelAssign()
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
-  static u8 au8TestMessage[] = {0, 0, 0, 0, 0xA5, 0, 0, 0};
+  static u8 au8TestMessage[] = {0x5B, 0, 0, 0, 0xFF, 0, 0, 0};
   u8 au8DataContent[] = "xxxxxxxxxxxxxxxx";
   
   /* Check all the buttons and update au8TestMessage according to the button state */ 
-  au8TestMessage[0] = 0x00;
+  au8TestMessage[0] = 0x5B;
   if( IsButtonPressed(BUTTON0) )
   {
     au8TestMessage[0] = 0xff;
