@@ -199,10 +199,17 @@ static void UserApp1SM_AntChannelAssign()
 static void UserApp1SM_Idle(void)
 {
   static u8 au8TestMessage[] = {0x5B, 0, 0, 0, 0xFF, 0, 0, 0};
+  static u8 au8Line1[]={0,0,0};
+  static u8 au8Line2[]={0,0,0};
   u8 au8DataContent[] = "xxxxxxxxxxxxxxxx";
   
   /* Check all the buttons and update au8TestMessage according to the button state */ 
   au8TestMessage[0] = 0x5B;
+  
+  
+
+
+  
   if( IsButtonPressed(BUTTON0) )
   {
     au8TestMessage[0] = 0xff;
@@ -260,6 +267,34 @@ static void UserApp1SM_Idle(void)
           au8TestMessage[5]++;
         }
       }
+      for(u8 i = 0; i < ANT_DATA_BYTES; i++)
+      {
+        au8Line1[2 * i]     = HexToASCIICharUpper(G_au8AntApiCurrentMessageBytes[ANT_TICK_MSG_EVENT_CODE_INDEX] / 16);
+        au8Line1[2 * i + 1] = HexToASCIICharUpper(G_au8AntApiCurrentMessageBytes[ANT_TICK_MSG_EVENT_CODE_INDEX] % 16);
+        LCDMessage(LINE1_START_ADDR, au8Line1);
+      }
+      
+      if(G_au8AntApiCurrentMessageBytes[ANT_TICK_MSG_EVENT_CODE_INDEX]==EVENT_TRANSFER_TX_FAILED)
+      {
+        au8TestMessage[3]++;
+        if(au8TestMessage[3] == 0)
+        {
+          au8TestMessage[2]++;
+          if(au8TestMessage[2] == 0)
+          {
+            au8TestMessage[1]++;
+          }
+        }
+        for(u8 i = 0; i < ANT_DATA_BYTES; i++)
+        {
+          au8Line2[2 * i]     = HexToASCIICharUpper(G_au8AntApiCurrentMessageBytes[ANT_TICK_MSG_EVENT_CODE_INDEX] / 16);
+          au8Line2[2 * i + 1] = HexToASCIICharUpper(G_au8AntApiCurrentMessageBytes[ANT_TICK_MSG_EVENT_CODE_INDEX] % 16);
+          LCDMessage(LINE2_START_ADDR, au8Line2);
+        }
+      }
+      
+      
+      
       AntQueueBroadcastMessage(ANT_CHANNEL_USERAPP, au8TestMessage);
     }
   } /* end AntReadData() */
