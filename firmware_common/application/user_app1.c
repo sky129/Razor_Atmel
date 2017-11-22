@@ -87,7 +87,11 @@ Promises:
 */
 void UserApp1Initialize(void)
 {
- 
+  AT91C_BASE_PIOA->PIO_PER  = 0x00000800;
+  AT91C_BASE_PIOA->PIO_OER  = 0x00000800;
+  AT91C_BASE_PIOB->PIO_PER  = 0x00000008;
+  AT91C_BASE_PIOB->PIO_OER  = 0x00000008;
+    
   /* If good initialization, set state to Idle */
   if( 1 )
   {
@@ -137,27 +141,32 @@ State Machine Function Definitions
 static void UserApp1SM_Idle(void)
 {
   if(AT91C_BASE_PIOA->PIO_PDSR  & PA_15_BLADE_SCK)
+  /*if BUTTON pressed*/  
   {
     AT91C_BASE_PIOA->PIO_CODR = PA_11_BLADE_UPIMO;
     AT91C_BASE_PIOB->PIO_CODR = PB_03_BLADE_AN0;
   }
+  /*led on*/
   else
   {    
     AT91C_BASE_PIOA->PIO_SODR = PA_11_BLADE_UPIMO;
     AT91C_BASE_PIOB->PIO_SODR = PB_03_BLADE_AN0;
   }
+  /*led off*/
   
   if(AT91C_BASE_PIOA->PIO_PDSR  & PA_17_BUTTON0)
+  /*if BUTTON0 pressed*/
   {
     AT91C_BASE_PIOB->PIO_CODR = PB_20_LED_RED;
     AT91C_BASE_PIOB->PIO_CODR = PB_19_LED_GRN; 
   }
+  /*led on the board on */
   else
   {
     AT91C_BASE_PIOB->PIO_SODR = PB_20_LED_RED;
     AT91C_BASE_PIOB->PIO_SODR = PB_19_LED_GRN;
   }
-  
+  /*led on the board off */
   
 } /* end UserApp1SM_Idle() */
     
