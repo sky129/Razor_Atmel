@@ -87,10 +87,7 @@ Promises:
 */
 void UserApp1Initialize(void)
 {
-  AT91C_BASE_PIOA->PIO_PER  = 0x00000800;
-  AT91C_BASE_PIOA->PIO_OER  = 0x00000800;
-  AT91C_BASE_PIOB->PIO_PER  = 0x00000008;
-  AT91C_BASE_PIOB->PIO_OER  = 0x00000008;
+  AT91C_BASE_PIOA->PIO_PER  = PA_28_BUZZER1;    
     
   /* If good initialization, set state to Idle */
   if( 1 )
@@ -140,34 +137,34 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
-  if(AT91C_BASE_PIOA->PIO_PDSR  & PA_15_BLADE_SCK)    
-  {
-    AT91C_BASE_PIOA->PIO_CODR = PA_11_BLADE_UPIMO;
-    AT91C_BASE_PIOB->PIO_SODR = PB_03_BLADE_AN0;
-  }
-  /*led green on*/
-  else
-  /*if BUTTON pressed*/  
-  {    
-    AT91C_BASE_PIOA->PIO_SODR = PA_11_BLADE_UPIMO;    
-    AT91C_BASE_PIOB->PIO_CODR = PB_03_BLADE_AN0;
-  }
-  /*led red on*/
+  static u8 u8Count = 0;
+  static u8 u8Periord = 10;
   
   if(AT91C_BASE_PIOA->PIO_PDSR  & PA_17_BUTTON0)  
   {
     AT91C_BASE_PIOB->PIO_CODR = PB_20_LED_RED;
     AT91C_BASE_PIOB->PIO_SODR = PB_19_LED_GRN;
   }
-  /*led green on the board on */
+  /*led green on */
   else
   /*if BUTTON0 pressed*/  
   {
     AT91C_BASE_PIOB->PIO_SODR = PB_20_LED_RED;    
-    AT91C_BASE_PIOB->PIO_CODR = PB_19_LED_GRN; 
-  }
-  /*led red on the board on */
-  
+    AT91C_BASE_PIOB->PIO_CODR = PB_19_LED_GRN;
+    /*led red on */  
+    if(u8Count++  ==  u8Periord)
+    {
+      u8Count =0;
+      AT91C_BASE_PIOA->PIO_SODR = PA_28_BUZZER1;        
+    }
+    /*Buzzer1 low */
+    else
+    {
+      AT91C_BASE_PIOA->PIO_CODR = PA_28_BUZZER1;
+    }
+    /*Buzzer1 high */
+  } 
+
 } /* end UserApp1SM_Idle() */
     
 
