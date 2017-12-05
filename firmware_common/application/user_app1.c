@@ -160,7 +160,7 @@ static void UserApp1SM_Idle(void)
     }
     bLightOn  = !bLightOn;
   }
-/*  
+  
   if(u32Time  ==  100)
   {
     u32Time = 0;    
@@ -178,7 +178,7 @@ static void UserApp1SM_Idle(void)
         u32Count  = 0;
       }
     }
-  }*/
+  }
 } /* end UserApp1SM_Idle() */
     
 
