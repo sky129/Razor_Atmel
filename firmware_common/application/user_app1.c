@@ -135,33 +135,34 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
-  static  u32 u32Time            = 0;
+  static  u8  u8Time            = 0;
   static  u8  u8State            = 0;
   static  LedRateType  u8LED_PWM = LED_PWM_0;
   
-  u32Time++;  
-  //LedOn(RED);
-  //LedOn(GREEN);
+  u8Time++;  
+  LedOn(RED);
+  LedOn(GREEN);    
   
-  LedPWM(BLUE , LED_PWM_100);
-/*  
-  if(u32Time  ==  40)
-  {
-    u32Time = 0;
-    u8State++;
-    u8LED_PWM++;
-  }
-  
-  
-  if(u8State  >=  20 )
-  {
-    u8LED_PWM--;
-    if(u8LED_PWM  ==  0)
+  if(u8Time  ==  40)
+  {   
+    u8Time = 0;
+    if(u8State  < 20)      
     {
-      u8State = 0;
+      u8State++;
+      u8LED_PWM ++  ;
+      LedPWM(BLUE , u8LED_PWM);
     }
-  }
-*/  
+    
+    if(u8State  >=  20 )
+    {
+      u8LED_PWM --  ;
+      LedPWM(BLUE , u8LED_PWM);
+      if(u8LED_PWM  ==  0)
+      {
+        u8State = 0;
+      }
+    }
+  } 
 } /* end UserApp1SM_Idle() */
     
 
