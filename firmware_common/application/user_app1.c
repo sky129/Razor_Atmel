@@ -88,6 +88,7 @@ Promises:
 void UserApp1Initialize(void)
 {
   /* If good initialization, set state to Idle */
+  LedOn(GREEN);
   if( 1 )
   {
     UserApp1_StateMachine = UserApp1SM_Idle;
@@ -140,11 +141,11 @@ static void UserApp1SM_Idle(void)
   static  LedRateType  u8LED_PWM = LED_PWM_0;
   
   u8Time++;  
-  LedOn(RED);
-  LedOn(GREEN);    
+  LedOn(RED);    
   
   if(u8Time  ==  40)
   {   
+    LedBlink( GREEN , LED_2HZ);
     u8Time = 0;
     if(u8State  < 20)      
     {
