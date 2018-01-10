@@ -87,7 +87,8 @@ Promises:
 */
 void UserApp1Initialize(void)
 {
- 
+  LCDCommand(LCD_CLEAR_CMD);
+  PWMAudioSetFrequency(BUZZER1, 500);
   /* If good initialization, set state to Idle */
   if( 1 )
   {
@@ -136,6 +137,45 @@ State Machine Function Definitions
 /* Wait for ??? */
 static void UserApp1SM_Idle(void)
 {
+  static u8 au8Message[] = "Qiaofeng";
+  static u8 u8Place      = 0;
+  static u8 u8Address    = LINE1_START_ADDR;
+  static u32 u32Time     = 0;
+  u32Time++;
+  
+  if(u32Time==500)
+  {
+    LedOn(RED);
+    u32Time = 0;
+    u8Place++;
+    LCDCommand(LCD_CLEAR_CMD);
+    LCDMessage(u8Address+u8Place, au8Message);  
+   
+    if(u8Place  ==  20)
+    {
+      PWMAudioOn(BUZZER1);
+      if(u8Place  ==  20  &&  u8Address == LINE1_START_ADDR)
+      {
+        u8Place = 0;
+        u8Address    = LINE2_START_ADDR;
+      }
+      if(u8Place  ==  20  &&  u8Address == LINE2_START_ADDR)
+      {
+        u8Place = 0;
+        u8Address    = LINE1_START_ADDR;
+      }   
+    }
+    else
+    {
+      PWMAudioOff(BUZZER1);
+    }
+  }
+  
+  else
+  {
+    LedOff(RED);
+  }
+  
 
 } /* end UserApp1SM_Idle() */
     
