@@ -138,7 +138,10 @@ static void UserApp1SM_Idle(void)
   static u8 au8Line1[]="LED   Programming     Interface";
   static u8 au8Line2[]="Press 1 to program LEDcommand sequence";
   static u8 au8Line3[]="Press 2 to show current USER program";
+  static u8 au8List2[]="Current USER program:";
+  static u8 au8Temp[2];
   static bool bList=TRUE;
+  static bool bState=TRUE;
   if(bList)
   {
     DebugPrintf(au8Line1);
@@ -147,10 +150,25 @@ static void UserApp1SM_Idle(void)
     DebugLineFeed();
     DebugPrintf(au8Line3);
     DebugLineFeed();
-    bList=FALSE;
+    bList=FALSE;  
   }
-  static u8 au8List2[]="Current USER program:";
   
+  if(bState==TRUE)
+  {
+    if()
+    {
+      bState==FALSE;
+    }
+  }
+
+  if(bState==FALSE)
+  {
+    DebugPrintf(au8List2);
+    if()
+    {
+      bState==TRUE
+    }
+  }
   
 } /* end UserApp1SM_Idle() */
                       
