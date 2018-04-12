@@ -97,7 +97,7 @@ void UserApp1Initialize(void)
     /* The task isn't properly initialized, so shut it down and don't run */
     UserApp1_StateMachine = UserApp1SM_FailedInit;
   }
-
+ 
 } /* end UserApp1Initialize() */
 
   
@@ -135,6 +135,22 @@ State Machine Function Definitions
 /* Wait for input */
 static void UserApp1SM_Idle(void)
 {
+  static u8 au8Line1[]="LED   Programming     Interface";
+  static u8 au8Line2[]="Press 1 to program LEDcommand sequence";
+  static u8 au8Line3[]="Press 2 to show current USER program";
+  static bool bList=TRUE;
+  if(bList)
+  {
+    DebugPrintf(au8Line1);
+    DebugLineFeed();  
+    DebugPrintf(au8Line2);
+    DebugLineFeed();
+    DebugPrintf(au8Line3);
+    DebugLineFeed();
+    bList=FALSE;
+  }
+  static u8 au8List2[]="Current USER program:";
+  
   
 } /* end UserApp1SM_Idle() */
                       

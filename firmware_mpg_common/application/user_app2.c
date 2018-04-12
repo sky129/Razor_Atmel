@@ -360,6 +360,8 @@ Promises:
 void UserApp2Initialize(void)
 {
   u8 au8UserApp1Start2[] = "LED display task started\n\r";
+
+  
   
   /* Initialize the list variables */
   UserApp2_sDemoLedCommandList.psFirstCommand = NULL;
@@ -369,7 +371,8 @@ void UserApp2Initialize(void)
   UserApp2_sUserLedCommandList.psFirstCommand = NULL;
   UserApp2_sUserLedCommandList.u8ListSize = 0;
   UserApp2_sUserLedCommandList.u32ListEndTime = 0;
-
+  
+  
 #ifndef DEMO_KNIGHT_RIDER
   /* Set up the standard hard-coded display array */
   LedCommandType aeDemoList[] =
@@ -507,7 +510,7 @@ void UserApp2Initialize(void)
     {YELLOW, 1000, FALSE, LED_PWM_100},
     {YELLOW, 2000, FALSE, LED_PWM_100}
   };
-
+  
   /* Build the command array */
   for(u8 i = 0; i < (sizeof(aeUserList) / sizeof(LedCommandType)); i++)
   {
