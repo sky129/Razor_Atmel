@@ -155,18 +155,24 @@ static void UserApp1SM_Idle(void)
   
   if(bState==TRUE)
   {
-    if()
+    
+    DebugScanf(au8Temp);
+    if(au8Temp[0]=='1')
     {
-      bState==FALSE;
+      bState=FALSE;
     }
   }
 
   if(bState==FALSE)
   {
-    DebugPrintf(au8List2);
-    if()
+    DebugScanf(au8Temp);
+    
+    if(au8Temp[0]=='2')
     {
-      bState==TRUE
+      bState=TRUE;
+      DebugLineFeed();
+      DebugPrintf(au8List2);
+      DebugLineFeed();
     }
   }
   
